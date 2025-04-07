@@ -1,0 +1,6 @@
+{
+  "name": "my-docker-app",
+  "version": "1.0.0",
+  "main": "app.js",
+  "dependencies": {}
+}
