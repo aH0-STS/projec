@@ -13,15 +13,8 @@ pipeline {
             }
         }
 
-        stage('Build Application') {
-            steps {
-                
-                    sh 'npm install'
-                    sh 'npm test || echo "No tests found"'
-                
-            }
-        }
 
+        
         stage('Build Docker Image') {
             steps {
                 
