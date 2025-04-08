@@ -2,32 +2,32 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_CREDENTIALS_ID = 'docker-cred'  // Ensure this credential exists in Jenkins
+        DOCKER_CREDENTIALS_ID = 'dockerhub-credentials'  // Ensure this credential exists in Jenkins
         IMAGE_NAME = 'saiyash000/my-node-app'
     }
 
     stages {
         stage('Checkout Code') {
             steps {
-                git branch: 'main', url: 'https://github.com/arjunkoppineni/my-sample-app.git'
+                git branch: 'main', url: 'https://github.com/aH0-STS/projec.git'
             }
         }
 
         stage('Build Application') {
             steps {
-                dir('myapp/backend') {
+                
                     sh 'npm install'
                     sh 'npm test || echo "No tests found"'
-                }
+                
             }
         }
 
         stage('Build Docker Image') {
             steps {
-                dir('myapp/backend') {
+                
                     script {
                         dockerImage = docker.build("${IMAGE_NAME}:latest")
-                    }
+                    
                 }
             }
         }
@@ -44,13 +44,12 @@ pipeline {
 
         stage('Deploy to Kubernetes') {
              steps {
-                 withKubeConfig([credentialsId: 'kubeconfig']) {
-                     dir('myapp/kubernetes') {
+                 withKubeConfig([credentialsId: 'configsec']) {
+                  
                          sh 'kubectl apply -f deployment.yaml'
                          sh 'kubectl apply -f service.yaml'
-                         sh 'kubectl rollout status deployment my-sample-app-deployment'
                          sh 'kubectl get pods'
-                     }
+                     
                  }
              }
          }
